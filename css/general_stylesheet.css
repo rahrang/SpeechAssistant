@@ -59,14 +59,13 @@ a:active {
 	color: black;
 }
 
-/*
-li {
-	margin: 1% 2%;
-}
-*/
 
 .speech-card {
 	border: 2px solid white;
+	margin: 1% 2%;
+	padding: 2%;
+	width: 25%;
+	
 }
 
 .speech-title {
@@ -81,7 +80,8 @@ li {
 
 .speech-promo {
 	font-size: 1.125em;
-	font-family: "Open Sans", sans-serif;	
+	font-family: "Open Sans", sans-serif;
+	width: 100%;
 }
 
 .icon {
@@ -116,6 +116,12 @@ div#footer {
 	padding-bottom: 0.5%;
 	background-color: rgba(0, 0, 0, 0.85);
 	color: black;
+}
+
+p#names {
+	color: white;
+	font-size: 1em;
+	letter-spacing: 0.025em;
 }
 
 @-webkit-keyframes fading {	
