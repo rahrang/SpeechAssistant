@@ -1,0 +1,146 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	/*background-color: #373737;*/
+	background-color: #95a5a6;
+	margin: none;
+	padding: none;
+}
+
+nav#navigation-bar {
+	position: absolute;
+	display: inline;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 5;
+	background-color: rgba(255, 255, 255, 0.5);
+	border: none;
+	border-radius: none;
+	padding-bottom: 0.5%;
+}
+
+h2 {
+	font-size: 2.5em;
+	font-family: "Quicksand", sans-serif;
+	color: black;
+	letter-spacing: 0.0625em;
+}
+
+a#logo {
+	font-family: "Raleway", sans-serif;
+	color: black;
+	margin-top: 2.5%;
+	font-size: 3em;
+	letter-spacing: 0.0625em;
+}
+
+p {
+	font-family: "Open Sans", sans-serif;
+	font-size: 1.5em;
+	color: black;
+	width: 80%;
+	margin:auto;
+	letter-spacing: 0.03125em;
+}
+
+a {
+	color: black;
+}
+
+a:hover {
+	text-decoration: none;
+	color: black;
+}
+
+a:active {
+	text-decoration: none;
+	color: black;
+}
+
+/*
+li {
+	margin: 1% 2%;
+}
+*/
+
+.speech-card {
+	border: 2px solid white;
+}
+
+.speech-title {
+	font-size: 1.5em;
+	font-family: "Open Sans", sans-serif;
+}
+
+.speech-author {
+	font-size: 1.25em;
+	font-family: "Open Sans", sans-serif;
+}
+
+.speech-promo {
+	font-size: 1.125em;
+	font-family: "Open Sans", sans-serif;	
+}
+
+.icon {
+	opacity: 1;
+	height: 50%;
+	width: 50%;
+}
+
+.icon:hover {
+	opacity: 0.75;
+}
+
+.main-img {
+	height: 50vh;
+	width: 60vh;
+}
+
+.wrapper {
+	white-space: pre-wrap;
+}
+
+/*Style the image slideshow fades*/
+
+.animate-fading {
+	-webkit-animation: fading 6s infinite;
+	animation: fading 6s infinite;
+}
+
+div#footer {
+	margin-top: 5%;
+	padding-top: 1%;
+	padding-bottom: 0.5%;
+	background-color: rgba(0, 0, 0, 0.85);
+	color: black;
+}
+
+@-webkit-keyframes fading {	
+	0% {opacity:0.5;}
+	5% {opacity:1;}
+/*	20% {opacity:1}*/
+	95% {opacity:1;}
+	100% {opacity:0.5;}
+}
+
+@keyframes fading {	
+	0% {opacity:0.5;}
+	5% {opacity:1;}
+/*	20% {opacity:1}*/
+	95% {opacity:1;}
+	100% {opacity:0.5;}
+}
+
+@media(max-width: 800px) {
+	.table--item {
+		margin-left: 14%;
+		margin-top: 5%;
+		padding: 5%;
+	}
+	.icon--wrap img{
+		height:2%;
+	}
+}
