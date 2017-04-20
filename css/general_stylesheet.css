@@ -3,7 +3,7 @@
 
 body {
 	/*background-color: #373737;*/
-	background-color: #95a5a6;
+	background-color: #FCFCFC;
 	margin: none;
 	padding: none;
 }
@@ -26,6 +26,10 @@ h2 {
 	font-family: "Quicksand", sans-serif;
 	color: black;
 	letter-spacing: 0.0625em;
+}
+
+.text-uppercase {
+	margin-top: 6%;
 }
 
 a#logo {
@@ -59,7 +63,22 @@ a:active {
 	color: black;
 }
 
+.hero {
+	margin-top: 5%;
+	margin-left: -2%;
+	margin-right: -5%;
+	width: 100%;
+	max-height: 420px;
+}
 
+.hero img {
+	object-fit: cover;
+	max-height: 500px;
+	width: 110%;
+	object-position: 20% 40%;
+
+
+}
 .speech-card {
 	border: 2px solid white;
 	margin: 1% 2%;
@@ -119,7 +138,7 @@ div#footer {
 }
 
 p#names {
-	color: white;
+	color: black;
 	font-size: 1em;
 	letter-spacing: 0.025em;
 }
