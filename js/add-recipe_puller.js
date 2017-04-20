@@ -4,29 +4,29 @@ $("#submit-button").click(function(){
 	
 	"use strict";
 	
-	var databaseURL = "https://hrw08iio3e.execute-api.us-east-1.amazonaws.com/prod/RecipeUpdate?TableName=Recipes";
+	var databaseURL = "https://hkgtsc7aa8.execute-api.us-east-1.amazonaws.com/prod/SpeechUpdate?TableName=Speech-Assistant";
 	
-	var recipe_name = document.getElementById("recipe_name").value;
-	var directions = document.getElementById("steps").value;
-	var ingred = document.getElementById("ingredients").value;
-	var image_link = document.getElementById("image_link").value;
+	var speech_name = document.getElementById("speech_name").value;
+	var speech_author = document.getElementById("speech_author").value;
+	var speech_image = document.getElementById("speech_image").value;
+	var speech_words = document.getElementById("speech_words").value;
 				
 	var to_post = JSON.stringify(
 	{
 		type: "POST",
 		data: {
-			TableName: "RecipeList",
+			TableName: "Speech-Assistant",
 			Item: {
-				RecipeName: recipe_name,
-				ImageSRC: image_link,
-				IngredientsList: ingred,
-				PrepDirections: directions
+				SpeechName: speech_name,
+				Author: speech_author,
+				ImageSRC: speech_image,
+				Words: speech_words
 			}
 		}
 	});
 
 	$.post(databaseURL, to_post);
 	
-	alert("Are you sure you want to enter this recipe?");
+	alert("Are you sure you want to enter this speech?");
 	
 });
