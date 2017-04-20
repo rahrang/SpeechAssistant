@@ -4,7 +4,7 @@ $(document).ready( function() {
 	"use strict";
 	
 //	The URL of our Dynamo database on AWS
-	var databaseURL = "https://hrw08iio3e.execute-api.us-east-1.amazonaws.com/prod/RecipeUpdate?TableName=RecipeList";
+	var databaseURL = "https://hrw08iio3e.execute-api.us-east-1.amazonaws.com/prod/RecipeUpdate?TableName=Speech-Assistant";
 	
 /*
 	{"Items":
@@ -37,10 +37,10 @@ $(document).ready( function() {
 	});
 		
 	//	variables to help us update corresponding html tags
-	var dishImg = "#dish-img-";
-	var dishName = "#dish-name-";
-	var dishIngr = "#dish-ingredients-";
-	var dishRec = "#dish-recipe-";
+	var speechImg = "#speech-img-";
+	var speechName = "#speech-name-";
+	var speechAuthor = "#speech-author-";
+	var speechRec = "#speech-words-";
 	
 	
 	//	the function to pull from the database and update the html tags
