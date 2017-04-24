@@ -19,6 +19,12 @@ nav#navigation-bar {
 	border: none;
 	border-radius: none;
 	padding-bottom: 0.5%;
+	-webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+
+    /* the rest of your styling */
+}
 }
 
 h2 {
@@ -27,15 +33,31 @@ h2 {
 	color: black;
 	letter-spacing: 0.0625em;
 }
-
-.text-uppercase {
-	margin-top: 6%;
+.section-1 {
+	margin-top: 0%;
+	padding-bottom: 5%;
 }
-
+.text-uppercase {
+	padding-top: 7%;
+}
+.text-uppercase-2 {
+	padding-top: -0.5%;
+}
+.about-under {
+	width: 12%;
+	border-color: #9b9b9b;
+	margin-top: 1%;
+	padding-bottom: 1%;
+}
+.featured-under{
+	width: 20%;
+	border-color: #9b9b9b;
+}
 a#logo {
 	font-family: "Raleway", sans-serif;
 	color: black;
-	margin-top: 2.5%;
+	margin-bottom: 3%;
+	margin-top: -2%;
 	font-size: 3em;
 	letter-spacing: 0.0625em;
 }
@@ -67,6 +89,7 @@ a:active {
 	margin-top: 5%;
 	margin-left: -2%;
 	margin-right: -5%;
+	margin-bottom:0%;
 	width: 100%;
 	max-height: 420px;
 }
@@ -74,34 +97,23 @@ a:active {
 .hero img {
 	object-fit: cover;
 	max-height: 500px;
-	width: 110%;
+	width: 104%;
 	object-position: 20% 40%;
-
-
 }
+
+.section-1 {
+	margin-top: 0%;
+	background-color: #eaeaea;
+}
+
 .speech-card {
-	border: 2px solid white;
+	border: 2px solid #e5e5e5;
 	margin: 1% 2%;
 	padding: 2%;
 	width: 25%;
 	
 }
 
-.speech-title {
-	font-size: 1.5em;
-	font-family: "Open Sans", sans-serif;
-}
-
-.speech-author {
-	font-size: 1.25em;
-	font-family: "Open Sans", sans-serif;
-}
-
-.speech-promo {
-	font-size: 1.125em;
-	font-family: "Open Sans", sans-serif;
-	width: 100%;
-}
 
 .icon {
 	opacity: 1;
@@ -133,14 +145,19 @@ div#footer {
 	margin-top: 5%;
 	padding-top: 1%;
 	padding-bottom: 0.5%;
-	background-color: rgba(0, 0, 0, 0.85);
-	color: black;
+	background-color: #1e232d;
 }
 
 p#names {
-	color: black;
+	text-align:center;
+	color: #eaeaea;
 	font-size: 1em;
 	letter-spacing: 0.025em;
+}
+
+.title-add{
+	margin-top: 7%;
+	margin-left: 3%;
 }
 
 @-webkit-keyframes fading {	
@@ -169,3 +186,4 @@ p#names {
 		height:2%;
 	}
 }
+

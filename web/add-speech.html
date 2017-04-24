@@ -10,6 +10,7 @@
 	<!--StyleSheets-->
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/general_stylesheet.css" rel="stylesheet" type="text/css">
+	<link href="css/add-speech.css" rel="stylesheet" type="text/css">
 
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -52,27 +53,50 @@
 
 <div class="container-fluid buffer">
 
-	<hr>
-	<h1> Add a Speech </h1>
-	<hr>
+	<div class="title-add-1">
+		<h1> Add a Speech </h1>
+	</div>
 			
 	<div class="row open-sans text-left">
 		
 		<div class="col-sm-2"></div>
 		<div class="col-sm-8">
+			    <div class="group">      
+			      <input type="text" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Speech Name</label>
+			      <div class="help-tip">
+			      	<p>Please enter a title for your speech. Please do not enter duplicate titles.</p>
+			      </div>
+			    </div>
+			      
+			    <div class="group">      
+			      <input type="text" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Author</label>
+			      <div class="help-tip">
+			      	<p>Please enter the speech's author.</p>
+			      </div>
+			    </div>
 
-			<p id="instr" class="text-center open-sans">You must enter values for the "Speech Name", "Author" and "Original Text" to update the speech database.</p>			
+			     <div class="group">      
+			      <input type="text" required>
+			      <span class="highlight"></span>
+			      <span class="bar"></span>
+			      <label>Image URL</label>
+			      <div class="help-tip">
+			      	<p>Please enter an image URL.</p>
+			      </div>
+			    </div>
+
+			  </form>		
 			<form id="input-speech" method="post">
-				
-				<b>Speech Name</b> <br> 
-				<input type="text" id="speech_name" name="name"> <br><br>
-				<b>Author</b> <br>
-				<input type="text" id="speech_author" name="author"> <br><br>
-				<b>Image</b> (URL) <br>
-				<input type="text" id="speech_image" name="image"> <br><br>
-				<b>Original Text</b> (Please copy and paste the speech)<br>
+				<b id="speechy">Speech</b> (Please copy and paste the speech)<br>
 				<textarea id="speech_words" name="words" rows="10" cols="70"></textarea> <br><br>
-				<input id="submit-button" class="text-uppercase" value="Submit" type="submit">
+
+				<button>Submit</button>
 				
 			</form>
 			
