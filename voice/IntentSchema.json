@@ -1,0 +1,49 @@
+{
+  "intents": [
+    {
+      "intent": "PracticeIntent",
+      "slots": [
+        {
+          "name": "speechName",
+          "type": "SpeechType"
+        }
+      ]
+    },
+    {
+      "intent": "EnumerateIntent"
+    },
+    {
+      "intent": "PracticeIntent"
+    },
+    {
+      "intent": "AuthorEnumerateIntent"
+    },
+    {
+      "intent": "AuthorIntent"
+    },
+    {
+      "intent": "SpeakIntent",
+      "slots": [
+        {
+          "name": "freeFormSpeech",
+          "type": "freeFormType"
+        }
+      ]
+    },
+    {
+      "intent": "AMAZON.StartOverIntent"
+    },
+    {
+      "intent": "AMAZON.RepeatIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}

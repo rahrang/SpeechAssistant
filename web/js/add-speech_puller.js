@@ -4,22 +4,25 @@ $("#submit-button").click(function(){
 	
 	"use strict";
 	
-	var databaseURL = "https://hkgtsc7aa8.execute-api.us-east-1.amazonaws.com/prod/SpeechUpdate?TableName=Speech-Assistant";
+	alert("called");
 	
-	var name = document.getElementById("speech_name").value;
+	var databaseURL = "https://puo6zmuiti.execute-api.us-east-1.amazonaws.com/prod/SpeechUpdate?TableName=SpeechTable";
+	
+	var title = document.getElementById("speech_name").value;
+	alert(title);
 	var author = document.getElementById("speech_author").value;
-	var image = document.getElementById("speech_image").value;
+	alert(author);
 	var words = document.getElementById("speech_words").value;
+	alert(words);
 				
 	var to_post = JSON.stringify(
 	{
 		type: "POST",
 		data: {
-			TableName: "Speech-Assistant",
+			TableName: "SpeechTable",
 			Item: {
-				SpeechName: name,
+				Title: title,
 				Author: author,
-				ImageSRC: image,
 				Words: words
 			}
 		}
