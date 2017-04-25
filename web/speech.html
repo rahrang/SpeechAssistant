@@ -10,6 +10,7 @@
 	<!--StyleSheets-->
 	<link href="css/bootstrap.css" rel="stylesheet" />
 	<link href="css/general_stylesheet.css" rel="stylesheet" type="text/css">
+	<link href="css/speech.css" rel="stylesheet" type="text/css">
 
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -54,29 +55,30 @@
 </nav>
 
 <div class="container-fluid buffer">
-	
-	<hr>
-	<h1 id="speech-title"> Speech </h1>
-	<hr>
-		
-	<br>
-	
-	<div class="row white">
-		
-		<div class="col-sm-1"></div>
-		<div class="col-sm-5">
+	<div class="speech-section-container">
+		<br>
+		<br>
+		<br>
+		<br>
+		<h1 id="speech-title"> Speech </h1>
+
+		<div class="speech-subsection">
+			<img src="https://unsplash.it/500/500"/>
+		</div>
+
+		<div class="speech-subsection">
 			<h2 class="text-center open-sans">Author</h2>
 			<p id="author-section" class="text-left wrapper"></p>
-		</div>
-		<div class="col-sm-5">
-			<h2 class="text-center open-sans">Words</h2>
+
+			<h2 class="text-center open-sans">Word Counter</h2>
+			<p id="counter-section" class="text-left wrapper"></p>
+
+			<h2 class="text-center open-sans">Speech</h2>
 			<p id="words-section" class="text-left wrapper"></p>
 		</div>
-		<div class="col-sm-1"></div>
+
 		
 	</div>
-	
-</div>
 
 <div class="container-fluid" id="footer">
 	<div class="row">

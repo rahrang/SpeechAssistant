@@ -1,0 +1,24 @@
+h1 #speech-title {
+ 	margin-left: 10%;
+ 	margin-bottom: 5%;
+}
+
+
+
+.speech-section-container {
+	width: 90%;
+	margin-left: 4%;
+	margin-right: 5%;
+	display: inline-block;
+}
+
+.image-container {
+	margin-top: 3%;
+	display: inline-block;
+}
+.speech-subsection {
+	position: relative;
+	width: 50%;
+	display: block;
+	text-align: center;
+}
