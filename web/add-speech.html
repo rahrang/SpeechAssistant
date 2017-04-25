@@ -62,44 +62,43 @@
 		<div class="col-sm-2"></div>
 		<div class="col-sm-8">
 
-			<div class="group">      
-			      <input type="text" required>
-			      <span class="highlight"></span>
-			      <span class="bar"></span>
-			      <label>Speech Name</label>
-			      <div class="help-tip">
-			      	<p>Please enter a title for your speech. Please do not enter duplicate titles.</p>
-			      </div>
-			    </div>
+				<div class="group">      
+					<input type="text" id="speech_name" required>
+					<span class="highlight"></span>
+					<span class="bar"></span>
+					<label>Speech Name</label>
+					<div class="help-tip">
+						<p>Please enter a title for your speech. Please do not enter duplicate titles.</p>
+					</div>
+				</div>
 			      
-			    <div class="group">      
-			      <input type="text" required>
-			      <span class="highlight"></span>
-			      <span class="bar"></span>
-			      <label>Author</label>
-			      <div class="help-tip">
-			      	<p>Please enter the speech's author.</p>
-			      </div>
-			    </div>
+				<div class="group">      
+						<input type="text" id="speech_author" required>
+						<span class="highlight"></span>
+						<span class="bar"></span>
+						<label>Author</label>
+						<div class="help-tip">
+							<p>Please enter the speech's author.</p>
+						</div>
+				</div>
 
-			     <div class="group">      
-			      <input type="text" required>
-			      <span class="highlight"></span>
-			      <span class="bar"></span>
-			      <label>Image URL</label>
-			      <div class="help-tip">
-			      	<p>Please enter an image URL.</p>
-			      </div>
-			    </div>
+				<div class="group">      
+						<input type="text" id="speech_image" required>
+						<span class="highlight"></span>
+						<span class="bar"></span>
+						<label>Image URL</label>
+						<div class="help-tip">
+							<p>Please enter an image URL.</p>
+						</div>
+				</div>
 
-			  </form>		
-			<form id="input-speech" method="post">
-				<b id="speechy">Speech</b> (Please copy and paste the speech)<br>
-				<textarea id="speech_words" name="words" rows="10" cols="70"></textarea> <br><br>
-
-				<button>Submit</button>
-				
-			</form>
+				<form id="input-speech" method="post">
+					<b id="speechy">Speech</b> (Please copy and paste the speech)
+					<br>
+					<textarea id="speech_words" name="words" rows="10" cols="70"></textarea>
+					<br><br>
+					<button type="submit" id="submit-button">Submit</button>
+				</form>
 			
 		</div>
 		<div class="col-sm-2"></div>

@@ -172,6 +172,7 @@ button:hover, button:focus {
 
 #speechy {
   font-size: 20px;
+  text-align: left;
 }
 
 /* CSS animation */

@@ -4,9 +4,12 @@ $("#submit-button").click(function(){
 	
 	"use strict";
 	
+	alert("called");
+	
 	var databaseURL = "https://puo6zmuiti.execute-api.us-east-1.amazonaws.com/prod/SpeechUpdate?TableName=SpeechTable";	
 	var title = document.getElementById("speech_name").value;
 	var author = document.getElementById("speech_author").value;
+	var image = document.getElementById("speech_image").value;
 	var words = document.getElementById("speech_words").value;				
 	
 	var to_post = JSON.stringify(
@@ -15,7 +18,8 @@ $("#submit-button").click(function(){
 		Item: {
 			Title: title,
 			Author: author,
-			Words: words
+			Words: words,
+			Image: image
 		}
 	});
 
