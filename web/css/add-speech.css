@@ -230,3 +230,15 @@ input:focus ~ .highlight {
   from { background:#1E232D; }
   to  { width:0; background:transparent; }
 }
+
+@media(max-width: 450px) {
+  
+  .title-add-1 {
+    margin-top:30%;
+  }
+}
+@media(max-width: 800px) {
+  .title-add-1 {
+    margin-top:12%;
+  }
+}
