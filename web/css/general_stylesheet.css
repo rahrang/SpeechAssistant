@@ -2,7 +2,6 @@
 /* CSS Document */
 
 body {
-	/*background-color: #373737;*/
 	background-color: #FCFCFC;
 	margin: none;
 	padding: none;
@@ -22,9 +21,6 @@ nav#navigation-bar {
 	-webkit-box-shadow: 0 8px 6px -6px #999;
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 8px 6px -6px #999;
-
-    /* the rest of your styling */
-}
 }
 
 h2 {
@@ -149,10 +145,10 @@ div#footer {
 }
 
 p#names {
-	text-align:center;
 	color: #eaeaea;
 	font-size: 1em;
 	letter-spacing: 0.025em;
+	padding: 1%;
 }
 
 .title-add{
