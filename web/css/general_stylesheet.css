@@ -49,6 +49,7 @@ h2 {
 	width: 20%;
 	border-color: #9b9b9b;
 }
+
 a#logo {
 	font-family: "Raleway", sans-serif;
 	color: black;
@@ -107,7 +108,6 @@ a:active {
 	margin: 1% 2%;
 	padding: 2%;
 	width: 25%;
-	
 }
 
 
@@ -130,11 +130,20 @@ a:active {
 	white-space: pre-wrap;
 }
 
-/*Style the image slideshow fades*/
+button#search-button {
+	color: black;
+	border: 2px solid black;
+	border-radius: 5em;
+	background-color: white;
+	padding: 1%;
+	font-family: "Open Sans", sans-serif;
+	font-size: 1.25em;
+	letter-spacing: 0.05em;
+}
 
-.animate-fading {
-	-webkit-animation: fading 6s infinite;
-	animation: fading 6s infinite;
+button#search-button:hover {
+	background-color: black;
+	color: white;
 }
 
 div#footer {
@@ -154,22 +163,6 @@ p#names {
 .title-add{
 	margin-top: 7%;
 	margin-left: 3%;
-}
-
-@-webkit-keyframes fading {	
-	0% {opacity:0.5;}
-	5% {opacity:1;}
-/*	20% {opacity:1}*/
-	95% {opacity:1;}
-	100% {opacity:0.5;}
-}
-
-@keyframes fading {	
-	0% {opacity:0.5;}
-	5% {opacity:1;}
-/*	20% {opacity:1}*/
-	95% {opacity:1;}
-	100% {opacity:0.5;}
 }
 
 @media(max-width: 900px) {
@@ -213,7 +206,6 @@ p#names {
   	vertical-align: top;
   }
 
-
   .speech-card{
   	vertical-align: top;
   	height: 230px;
@@ -227,9 +219,8 @@ p#names {
   	font-size: 13px;
   }
   
-
   .speech-card .speech-promo {
-  	font-size: 15px;
+  	font-size: 13px;
   }
 
 }

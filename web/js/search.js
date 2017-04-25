@@ -20,6 +20,11 @@ $.get(databaseURL, function(data) {
 	databaseSize = data.Count;
 });
 
+function get5Words(str) {
+	"use strict";
+    return str.split(/\s+/).slice(0,5).join(" ");
+}
+
 var list_holder = document.getElementById("entire-database");
 
 //	variables to help us update corresponding html tags
@@ -72,7 +77,7 @@ $.get(databaseURL, function(data) {
 
 		$(author + index_2).text(data.Items[index_2].Author);
 
-		$(promo + index_2).text(data.Items[index_2].Words);
+		$(promo + index_2).text(get5Words(data.Items[index_2].Words) + "...");
 
 	}
 
