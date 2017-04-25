@@ -5,15 +5,12 @@
       "slots": [
         {
           "name": "speechName",
-          "type": "SpeechType"
+          "type": "speechType"
         }
       ]
     },
     {
       "intent": "EnumerateIntent"
-    },
-    {
-      "intent": "PracticeIntent"
     },
     {
       "intent": "AuthorEnumerateIntent"

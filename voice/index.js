@@ -2,7 +2,8 @@
 
 var SKILL_STATES = {
     START: "_STARTMODE",
-    ENUMERATE: "_ENUMERATEMODE"
+    AENUMERATE: "_AENUMERATEMODE",
+    PRACTICE: "_PRACTICEMODE"
 };
 
 var languageString = {
@@ -28,7 +29,7 @@ exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.appId = APP_ID;
     alexa.resources = languageString;
-    alexa.registerHandlers(newSessionHandlers, startStateHandlers, enumerateStateHandlers);
+    alexa.registerHandlers(newSessionHandlers, startStateHandlers, aenumerateStateHandlers, practiceStateHandlers);
     alexa.execute();
 };
 
@@ -36,12 +37,10 @@ var newSessionHandlers = {
     "LaunchRequest": function () {
         this.handler.state = SKILL_STATES.START;
         loadDatabase.call(this);
-        this.emitWithState("Start");
     },
     "Unhandled": function () {
         this.handler.state = SKILL_STATES.START;
         loadDatabase.call(this);
-        this.emitWithState("Start");
     }
 };
 
@@ -49,7 +48,7 @@ function loadDatabase()
 {
     // var self = this;
     rp({
-        uri: "https://hrw08iio3e.execute-api.us-east-1.amazonaws.com/prod/RecipeUpdate?TableName=RecipeList",
+        uri: "https://puo6zmuiti.execute-api.us-east-1.amazonaws.com/prod/SpeechUpdate?TableName=SpeechTable",
         json: true
     })
     .catch(error => {
@@ -59,7 +58,7 @@ function loadDatabase()
     .then(data =>
     {
         data['Items'].forEach(speech => {
-            const name = speech['SpeechName'].toLowerCase();
+            const name = speech['Title'].toLowerCase();
             database[name] = speech;
         });
         if(Object.keys(database).length != 0) {
@@ -77,12 +76,13 @@ var startStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.START,{
         this.emit(":ask", speechOutput, speechOutput);
     },
     "EnumerateIntent": function() {
-
+        enumerateSpeeches.call(this);
     },
     "PracticeIntent": function() {
-
+        transitionPracticeState.call(this);
     },
     "AuthorEnumerateIntent": function() {
+        this.handler.state = SKILL_STATES.AENUMERATE;
 
     },
     "AMAZON.StartOverIntent": function() {
@@ -112,7 +112,43 @@ var startStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.START,{
     }
 });
 
-var enumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.ENUMERATE, {
+function enumerateSpeeches() {
+    var speechOutput = "I have the speeches ";
+    var total = Math.min(10, Object.keys(database).length);
+    var count = 1;
+    for(var key in database) {
+        if(count > total) {
+            break;
+        }
+        if(count == total) {
+            speechOutput += "and " + database[key]['Title'] + ".";
+        } else {
+            speechOutput += database[key]['Title'] + ", ";
+        }
+        count += 1;
+    }
+    this.emit(":ask", speechOutput, speechOutput);
+}
+
+function transitionPracticeState() {
+    var speechTitle = String(this.event.request.intent.slots.speechName.value).toLowerCase;
+    if(speechTitle in database) {
+        var speech = database[speechTitle];
+        Object.assign(this.attributes, {
+            "linePos": 0,
+            "lines": speech['Words'].split([^(\?|\.|\!)]+).filter(function(e1) {return e1.length!=0;}),
+            
+        });
+    }
+}
+
+var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, {
+    "Start": function() {
+
+    }
+});
+
+var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     "Start": function() {
 
     }
