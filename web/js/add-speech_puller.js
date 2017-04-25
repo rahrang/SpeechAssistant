@@ -17,14 +17,11 @@ $("#submit-button").click(function(){
 				
 	var to_post = JSON.stringify(
 	{
-		type: "POST",
-		data: {
-			TableName: "SpeechTable",
-			Item: {
-				Title: title,
-				Author: author,
-				Words: words
-			}
+		TableName: "SpeechTable",
+		Item: {
+			Title: title,
+			Author: author,
+			Words: words
 		}
 	});
 
