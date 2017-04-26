@@ -254,6 +254,15 @@ p#names {
 	}
 }
 
+@media(max-width: 500px) {
+	.navbar-toggle.collapsed button{
+		margin-top: 5%;
+	}
+	a #logo {
+		size: 20px;
+	}
+}
+
 @media(max-width: 800px) {
 	.hero{
 		margin-top: 12%;
