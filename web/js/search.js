@@ -1,32 +1,20 @@
 	// JavaScript Document
 function doSearch() {
+	
+	"use strict";
 
 	//window.location.reload();
 	var x = 0; 
-
-	var speech_block = "";
-	speech_block += "<li class='speech-card'>";
-	speech_block += "<a id='link-' href='speech.html'>";
-	speech_block += "<h3 id='title-' class='speech-title'>Add a Speech Title</h3>";
-	speech_block += "<h4 id='author-' class='speech-author'>Add a Speech Author</h4>";
-	speech_block += "<hr>";
-	speech_block += "<p id='promo-' class='speech-promo'>Add a Speech Promo</p>";
-	speech_block += "</a>";
-	speech_block += "</li>";
-
-	;
 
 	//	The URL of our Dynamo database on AWS
 	var databaseURL = "https://puo6zmuiti.execute-api.us-east-1.amazonaws.com/prod/SpeechUpdate?TableName=SpeechTable";
 
 	var databaseSize = 0;
 	$.get(databaseURL, function(data) {
-		"use strict";
 		databaseSize = data.Count;
 	});
 
 	function get6Words(str) {
-		"use strict";
 	    return str.split(/\s+/).slice(0,6).join(" ");
 	}
 
@@ -40,8 +28,6 @@ function doSearch() {
 
 	//	the function to pull from the database and update the html tags
 	$.get(databaseURL, function(data) {
-		
-		"use strict";
 		
 		for (var index_1 = 0; index_1 < databaseSize; index_1++) {
 

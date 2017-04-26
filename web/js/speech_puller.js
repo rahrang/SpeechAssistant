@@ -14,6 +14,8 @@ $(document).ready( function() {
 	$.get(databaseURL, function(data) {
 			
 		$("#speech-title").text(data.Items[main_index].Title);
+		
+		$("#image-section").attr("src", data.Items[main_index].Image);
 				
 		$("#author-section").text(data.Items[main_index].Author);
 		
