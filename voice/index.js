@@ -12,6 +12,8 @@ var languageString = {
             "SKILL_NAME": "Speech Assistant",
             "OPEN_PROMPT": "Hi, %s here! What do you want to do today?",
             "STOP_MESSAGE": "Good luck with the speech!",
+            "UNFOUND_SPEECH": "Sorry, I couldn't find %s, is there another speech you would like to practice?",
+            "LOOK_UP": "Let me pull up %s by %s.", 
             "WHAT_CAN_I_SAY": "I can help you memorize a speech, and then provide feedback to help you improve." +
                 " Ask me for a list of my speeches, speech authors, or if you’re a returning user, you can specify a speech."
             "SPEECH_LOAD_ERR": "Sorry, it looks like an error occurred while loading the speeches.",
@@ -61,7 +63,8 @@ function loadDatabase()
             const name = speech['Title'].toLowerCase();
             database[name] = speech;
         });
-        if(Object.keys(database).length != 0) {
+        // if(Object.keys(database).length != 0) {
+        if(database.length != 0) {
             this.emitWithState("Start");
         } else {
             var speechOutput = this.t("DATABASE_EMPTY_ERR", this.t("SKILL_NAME"));
@@ -114,7 +117,7 @@ var startStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.START,{
 
 function enumerateSpeeches() {
     var speechOutput = "I have the speeches ";
-    var total = Math.min(10, Object.keys(database).length);
+    var total = Math.min(10, database.length);
     var count = 1;
     for(var key in database) {
         if(count > total) {
@@ -136,19 +139,41 @@ function transitionPracticeState() {
         var speech = database[speechTitle];
         Object.assign(this.attributes, {
             "linePos": 0,
-            "lines": speech['Words'].split([^(\?|\.|\!)]+).filter(function(e1) {return e1.length!=0;}),
-            
+            "lines": speech['Words'].toLowerCase().split(/([^(\?|\.|\!)])+/g).filter(function(e1) {return e1.length!=0;}),
+            "author": speech['Author'],
+            "title": speechTitle
         });
+        this.handler.state = SKILL_STATES.PRACTICE;
+        this.emitWithState("Start");
+    } else {
+        var speechOutput = this.t("UNFOUND_SPEECH", speechTitle);
+        this.emit(":ask", speechOutput, speechOutput);
     }
 }
 
-var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, {
+var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     "Start": function() {
-
+        var speechOutput = this.t("LOOK_UP", this.attributes['title'], this.attributes['author']);
+        speechOutput += " The first sentence is " + this.attributes['lines'][0];
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "SpeakIntent": function() {
+        processSpeechInput.call(this);
     }
 });
 
-var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
+function processSpeechInput() {
+    var user = String(this.event.request.intent.slots.freeFormSpeech.value);
+    var userWords = user.split(" ").filter(function(e1) {return e1.length!=0;});
+    var userLength = userWords.length;
+
+    var pos = this.attributes['linePos'];
+    var systemWords = this.attributes['lines'][pos].split(/([^(\ |\,|\;)])+/g).filter(function(e1) {return e1.length!=0;});
+    var systemLength = systemWords.length;
+
+}
+
+var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, {
     "Start": function() {
 
     }

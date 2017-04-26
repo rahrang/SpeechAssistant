@@ -16,7 +16,13 @@
       "intent": "AuthorEnumerateIntent"
     },
     {
-      "intent": "AuthorIntent"
+      "intent": "AuthorIntent",
+      "slots": [
+        {
+          "name": "authorName",
+          "type": "authorType"
+        }
+      ]
     },
     {
       "intent": "SpeakIntent",
