@@ -2,6 +2,7 @@
 function doSearch() {
 
 	//window.location.reload();
+	var x = 0; 
 
 	var speech_block = "";
 	speech_block += "<li class='speech-card'>";
@@ -78,23 +79,25 @@ function doSearch() {
 		for (var index_2 = 0; index_2 < databaseSize; index_2++) {
 
 			if (searchText == data.Items[index_2].Title || searchText == data.Items[index_2].Author || searchText == data.Items[index_2].Words) {
-
+				x = 1;
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
 				$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
 
 			} else if (searchText == "") {
-
+				x = 1;
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
 				$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
-
-			} else {
-
-				continue;
-
 			}
-		}
 
+		}
+		if (x == 0) {
+			window.location.reload();
+		}
 	});
+}
+
+function resetPage() {
+	window.location.reload();
 }
