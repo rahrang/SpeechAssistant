@@ -3,7 +3,8 @@
 var SKILL_STATES = {
     START: "_STARTMODE",
     AENUMERATE: "_AENUMERATEMODE",
-    PRACTICE: "_PRACTICEMODE"
+    PRACTICE: "_PRACTICEMODE",
+    PRACTICEEND: "_PRACTICEENDMODE"
 };
 
 var languageString = {
@@ -16,9 +17,11 @@ var languageString = {
             "LOOK_UP": "Let me pull up %s by %s.", 
             "LENGTH_DIFF": "The sentence had %d words, you said %d words.",
             "SENTENCE_DIFF": "You said %s, the sentence was %s. Try again!",
+            "SPEECH_FINISH": "You have finished the speech. You made %d mistakes. Would you like to try again?",
             "UNHANDLED_PRACTICE": "Sorry, I couldn't understand that. You're currently on the following sentence %s.",
             "WHAT_CAN_I_SAY": "I can help you memorize a speech, and then provide feedback to help you improve." +
                 " Ask me for a list of my speeches, speech authors, or if you’re a returning user, you can specify a speech.",
+            "SPEECH_FINISH_NEW_PROMPT": "Okay, we're done with %s. Would you like to practice a different speech?",
             "SPEECH_LOAD_ERR": "Sorry, it looks like an error occurred while loading the speeches.",
             "DATABASE_EMPTY_ERR": "Hi, %s here! It looks like you haven't uploaded any speeches to the database."
         }
@@ -34,7 +37,7 @@ exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.appId = APP_ID;
     alexa.resources = languageString;
-    alexa.registerHandlers(newSessionHandlers, startStateHandlers, aenumerateStateHandlers, practiceStateHandlers);
+    alexa.registerHandlers(newSessionHandlers, startStateHandlers, aenumerateStateHandlers, practiceStateHandlers, practiceEndStateHandlers);
     alexa.execute();
 };
 
@@ -143,7 +146,8 @@ function transitionPracticeState() {
             "linePos": 0,
             "lines": speech['Words'].split(/[(\?\.\!)]+/).filter(function(e1) {return e1.length!=0;}),
             "author": speech['Author'],
-            "title": speechTitle
+            "title": speechTitle,
+            "mistakeCounter": 0
         });
         this.handler.state = SKILL_STATES.PRACTICE;
         this.emitWithState("Start");
@@ -162,8 +166,24 @@ var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     "SpeakIntent": function() {
         processSpeechInput.call(this);
     },
+    "AMAZON.RepeatIntent": function() {
+        var speechOutput = "You are currently on the following sentence: " + this.attributes['lines'][this.attributes['linePos']];
+        this.emit(":ask", speechOutput, speechOutput);
+    }
     "Unhandled": function() {
         var speechOutput = this.t("UNHANDLED_PRACTICE", this.attributes['lines'][this.attributes['linePos']]);
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.StopIntent": function() {
+        var speechOutput = this.t("STOP_MESSAGE");
+        this.emit(":tell", speechOutput, speechOutput);
+    },
+    "AMAZON.CancelIntent": function() {
+        var speechOutput = this.t("STOP_MESSAGE");
+        this.emit(":tell", speechOutput, speechOutput);
+    },,
+    "SessionEndedRequest": function() {
+        console.log("Session ended in state: " + this.event.request.reason);
     }
 });
 
@@ -179,11 +199,12 @@ function processSpeechInput() {
 
     if(userLength != systemLength) {
         var speechOutput = this.t("LENGTH_DIFF", systemLength, userLength);
+        this.attributes['mistakeCounter'] = this.attributes['mistakeCounter'] + 1;
         this.emit(":ask", speechOutput, speechOutput);
     } else {
         var words = true;
         for(var i = 0; i < systemLength; i++) {
-            if(userWords[i] === systemWords[i]) {
+            if(userWords[i].toLowerCase() === systemWords[i].toLowerCase()) {
                 continue;
             } else {
                 words = false;
@@ -194,14 +215,17 @@ function processSpeechInput() {
             this.attributes['linePos'] = pos + 1;
             var speechOutput = "Great job! ";
             if(pos + 1 == this.attributes['lines'].length) {
-                speechOutput += "You have finished the speech. Practice on!";
-                this.emit(":tell", speechOutput, speechOutput);
+                speechOutput += this.t("SPEECH_FINISH", this.attributes['mistakeCounter']);
+                this.handler.state = SKILL_STATES.PRACTICEEND;
+                this.attributes['repeat'] = true;
+                this.emit(":ask", speechOutput, speechOutput);
             } else {
                 speechOutput += this.attributes['lines'][pos+1];
                 this.emit(":ask", speechOutput, speechOutput);
             }
         } else {
             var speechOutput = this.t("SENTENCE_DIFF", user, system);
+            this.attributes['mistakeCounter'] = this.attributes['mistakeCounter'] + 1;
             this.emit(":ask", speechOutput, speechOutput);
         }
     }
@@ -209,6 +233,69 @@ function processSpeechInput() {
 
 var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, {
     "Start": function() {
+        // TODO: enumerate authors HERE
+    },
+    "Unhandled": function() {
+        var speechOutput = "I couldn't understand that. ";
+        // TODO: enumerate authors HERE
+    },
+    "AMAZON.StopIntent": function() {
+        var speechOutput = this.t("STOP_MESSAGE");
+        this.emit(":tell", speechOutput, speechOutput);
+    },
+    "AMAZON.CancelIntent": function() {
+        var speechOutput = this.t("STOP_MESSAGE");
+        this.emit(":tell", speechOutput, speechOutput);
+    },,
+    "SessionEndedRequest": function() {
+        console.log("Session ended in state: " + this.event.request.reason);
+    }
+});
 
+var practiceEndStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICEEND, {
+    "AMAZON.YesIntent": function() {
+        if(this.attributes['repeat']) { // Would you like to try again
+            this.attributes['linePos'] = 0;
+            this.handler.state = SKILL_STATES.PRACTICE;
+            this.emitWithState("Start");
+        } else { // Would you like to practice another speech
+            this.handler.state = SKILL_STATES.START;
+            this.emitWithState("Start");
+        }
+    },
+    "AMAZON.NoIntent": function() {
+        if(this.attributes['repeat']) { // They do not want to try again
+            // prompt to see if they want to practice a different speech
+            this.attributes['repeat'] = false;
+            var speechOutput = this.t("SPEECH_FINISH_NEW_PROMPT", this.attributes['title']);
+            this.emit(":ask", speechOutput, speechOutput);
+        } else { // they're done, end.
+            var speechOutput = "Good work today. Practice on!";
+            this.emit(":tell", speechOutput, speechOutput);
+        }
+    },
+    "PracticeIntent": function() { // if they say "i want to practice X" during this state
+        this.handler.state = SKILL_STATES.START;
+        transitionPracticeState.call(this);
+    },
+    "Unhandled": function() {
+        var speechOutput = "I couldn't understand that. ";
+        if(this.attributes['repeat']) {
+            speechOutput += "Would you like to try again?";
+        } else {
+            speechOutput += "Would you like to practice a different speech?";
+        }
+        this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AMAZON.StopIntent": function() {
+        var speechOutput = this.t("STOP_MESSAGE");
+        this.emit(":tell", speechOutput, speechOutput);
+    },
+    "AMAZON.CancelIntent": function() {
+        var speechOutput = this.t("STOP_MESSAGE");
+        this.emit(":tell", speechOutput, speechOutput);
+    },,
+    "SessionEndedRequest": function() {
+        console.log("Session ended in state: " + this.event.request.reason);
     }
 });
