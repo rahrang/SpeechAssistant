@@ -66,8 +66,7 @@ function loadDatabase()
             const name = speech['Title'].toLowerCase();
             database[name] = speech;
         });
-        // if(Object.keys(database).length != 0) {
-        if(database.length != 0) {
+        if(Object.keys(database).length != 0) {
             this.emitWithState("Start");
         } else {
             var speechOutput = this.t("DATABASE_EMPTY_ERR", this.t("SKILL_NAME"));
@@ -120,7 +119,7 @@ var startStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.START,{
 
 function enumerateSpeeches() {
     var speechOutput = "I have the speeches ";
-    var total = Math.min(10, database.length);
+    var total = Math.min(10, Object.keys(database).length);
     var count = 1;
     for(var key in database) {
         if(count > total) {
@@ -137,12 +136,12 @@ function enumerateSpeeches() {
 }
 
 function transitionPracticeState() {
-    var speechTitle = String(this.event.request.intent.slots.speechName.value).toLowerCase;
+    var speechTitle = String(this.event.request.intent.slots.speechName.value).toLowerCase();
     if(speechTitle in database) {
         var speech = database[speechTitle];
         Object.assign(this.attributes, {
             "linePos": 0,
-            "lines": speech['Words'].toLowerCase().split(/([^(\?|\.|\!)])+/g).filter(function(e1) {return e1.length!=0;}),
+            "lines": speech['Words'].split(/[(\?\.\!)]+/).filter(function(e1) {return e1.length!=0;}),
             "author": speech['Author'],
             "title": speechTitle
         });
@@ -175,14 +174,14 @@ function processSpeechInput() {
 
     var pos = this.attributes['linePos'];
     var system = this.attributes['lines'][pos];
-    var systemWords = system.split(/([^(\ |\,|\;)])+/g).filter(function(e1) {return e1.length!=0;});
+    var systemWords = system.split(/[(\ \,\;)]+/).filter(function(e1) {return e1.length!=0;});
     var systemLength = systemWords.length;
 
     if(userLength != systemLength) {
         var speechOutput = this.t("LENGTH_DIFF", systemLength, userLength);
         this.emit(":ask", speechOutput, speechOutput);
     } else {
-        boolean words = true;
+        var words = true;
         for(var i = 0; i < systemLength; i++) {
             if(userWords[i] === systemWords[i]) {
                 continue;
