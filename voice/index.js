@@ -14,8 +14,11 @@ var languageString = {
             "STOP_MESSAGE": "Good luck with the speech!",
             "UNFOUND_SPEECH": "Sorry, I couldn't find %s, is there another speech you would like to practice?",
             "LOOK_UP": "Let me pull up %s by %s.", 
+            "LENGTH_DIFF": "The sentence had %d words, you said %d words.",
+            "SENTENCE_DIFF": "You said %s, the sentence was %s. Try again!",
+            "UNHANDLED_PRACTICE": "Sorry, I couldn't understand that. You're currently on the following sentence %s.",
             "WHAT_CAN_I_SAY": "I can help you memorize a speech, and then provide feedback to help you improve." +
-                " Ask me for a list of my speeches, speech authors, or if you’re a returning user, you can specify a speech."
+                " Ask me for a list of my speeches, speech authors, or if you’re a returning user, you can specify a speech.",
             "SPEECH_LOAD_ERR": "Sorry, it looks like an error occurred while loading the speeches.",
             "DATABASE_EMPTY_ERR": "Hi, %s here! It looks like you haven't uploaded any speeches to the database."
         }
@@ -86,7 +89,7 @@ var startStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.START,{
     },
     "AuthorEnumerateIntent": function() {
         this.handler.state = SKILL_STATES.AENUMERATE;
-
+        this.emitWithState("Start");
     },
     "AMAZON.StartOverIntent": function() {
         this.emitWithState("Start");
@@ -159,6 +162,9 @@ var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     },
     "SpeakIntent": function() {
         processSpeechInput.call(this);
+    },
+    "Unhandled": function() {
+        var speechOutput = this.t("UNHANDLED_PRACTICE", this.attributes['lines'][this.attributes['linePos']]);
     }
 });
 
@@ -168,9 +174,38 @@ function processSpeechInput() {
     var userLength = userWords.length;
 
     var pos = this.attributes['linePos'];
-    var systemWords = this.attributes['lines'][pos].split(/([^(\ |\,|\;)])+/g).filter(function(e1) {return e1.length!=0;});
+    var system = this.attributes['lines'][pos];
+    var systemWords = system.split(/([^(\ |\,|\;)])+/g).filter(function(e1) {return e1.length!=0;});
     var systemLength = systemWords.length;
 
+    if(userLength != systemLength) {
+        var speechOutput = this.t("LENGTH_DIFF", systemLength, userLength);
+        this.emit(":ask", speechOutput, speechOutput);
+    } else {
+        boolean words = true;
+        for(var i = 0; i < systemLength; i++) {
+            if(userWords[i] === systemWords[i]) {
+                continue;
+            } else {
+                words = false;
+            }
+        }
+
+        if(words) {
+            this.attributes['linePos'] = pos + 1;
+            var speechOutput = "Great job! ";
+            if(pos + 1 == this.attributes['lines'].length) {
+                speechOutput += "You have finished the speech. Practice on!";
+                this.emit(":tell", speechOutput, speechOutput);
+            } else {
+                speechOutput += this.attributes['lines'][pos+1];
+                this.emit(":ask", speechOutput, speechOutput);
+            }
+        } else {
+            var speechOutput = this.t("SENTENCE_DIFF", user, system);
+            this.emit(":ask", speechOutput, speechOutput);
+        }
+    }
 }
 
 var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, {
