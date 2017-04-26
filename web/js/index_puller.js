@@ -19,8 +19,8 @@ $(document).ready( function() {
 	
 //	var list_holder = document.getElementById("database-container");
 	
-	function get5Words(str) {
-		return str.split(/\s+/).slice(0,5).join(" ");
+	function get6Words(str) {
+		return str.split(/\s+/).slice(0,6).join(" ");
 	}
 	
 	//	the function to pull from the database and update the html tags
@@ -66,7 +66,7 @@ $(document).ready( function() {
 			
 			$(author + index).text(data.Items[index].Author);
 			
-			$(promo + index).text(get5Words(data.Items[index].Words) + "...");
+			$(promo + index).text(get6Words(data.Items[index].Words) + "...");
 
 		}
 

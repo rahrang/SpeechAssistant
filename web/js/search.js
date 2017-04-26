@@ -1,6 +1,8 @@
 	// JavaScript Document
 function doSearch() {
 
+	//window.location.reload();
+
 	var speech_block = "";
 	speech_block += "<li class='speech-card'>";
 	speech_block += "<a id='link-' href='speech.html'>";
@@ -22,9 +24,9 @@ function doSearch() {
 		databaseSize = data.Count;
 	});
 
-	function get5Words(str) {
+	function get6Words(str) {
 		"use strict";
-	    return str.split(/\s+/).slice(0,5).join(" ");
+	    return str.split(/\s+/).slice(0,6).join(" ");
 	}
 
 	var list_holder = document.getElementById("entire-database");
@@ -79,17 +81,17 @@ function doSearch() {
 
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
-				$(promo + index_2).text(get5Words(data.Items[index_2].Words) + "...");
+				$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
 
 			} else if (searchText == "") {
 
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
-				$(promo + index_2).text(get5Words(data.Items[index_2].Words) + "...");
+				$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
 
 			} else {
 
-				window.location.reload();
+				continue;
 
 			}
 		}
