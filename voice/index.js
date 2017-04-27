@@ -149,7 +149,7 @@ function transitionPracticeState() {
         var speech = database[speechTitle];
         Object.assign(this.attributes, {
             "linePos": 0,
-            "lines": speech['Words'].split(/[(\?\.\!)]+/).filter(function(e1) {return e1.length!=0;}),
+            "lines": speech['Words'].split(/[(\?\.\!\:)]+/).filter(function(e1) {return e1.length!=0;}),
             "author": speech['Author'],
             "title": speechTitle,
             "mistakeCounter": 0
@@ -165,10 +165,13 @@ function transitionPracticeState() {
 var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     "Start": function() {
         var speechOutput = this.t("LOOK_UP", this.attributes['title'], this.attributes['author']);
-        speechOutput += " <break time=\"2s\" /> The first sentence is: " + this.attributes['lines'][0];
+        speechOutput += " <break time=\"1s\" /> The first sentence is: " + this.attributes['lines'][0];
         this.emit(":ask", speechOutput, speechOutput);
     },
     "SpeakIntent": function() {
+        processSpeechInput.call(this);
+    },
+    "PracticeIntent": function() { // shouldn't happen here, but possible
         processSpeechInput.call(this);
     },
     "AMAZON.RepeatIntent": function() {
@@ -204,6 +207,7 @@ function processSpeechInput() {
 
     if(userLength != systemLength) {
         var speechOutput = this.t("LENGTH_DIFF", systemLength, userLength);
+        speechOutput += " Lets try again! The sentence was " + system;
         this.attributes['mistakeCounter'] = this.attributes['mistakeCounter'] + 1;
         this.emit(":ask", speechOutput, speechOutput);
     } else {
@@ -249,7 +253,7 @@ function processSpeechInput() {
                 this.attributes['repeat'] = true;
                 this.emit(":ask", speechOutput, speechOutput);
             } else {
-                speechOutput += "The next sentence is: " this.attributes['lines'][pos+1];
+                speechOutput += "The next sentence is: " + this.attributes['lines'][pos+1];
                 this.emit(":ask", speechOutput, speechOutput);
             }
         } else {
@@ -283,6 +287,9 @@ var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, 
             count += 1;
         }
         this.emit(":ask", speechOutput, speechOutput);
+    },
+    "AuthorIntent": function() {
+        
     },
     "Unhandled": function() {
         var speechOutput = "I couldn't understand that. ";

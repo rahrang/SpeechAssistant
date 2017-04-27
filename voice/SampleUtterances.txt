@@ -1,3 +1,12 @@
+PracticeIntent i would like to practice {speechName}
+PracticeIntent i want to practice {speechName}
+PracticeIntent i wanna practice {speechName}
+PracticeIntent can i practice {speechName}
+PracticeIntent can i work on {speechName}
+PracticeIntent i would like to work on {speechName}
+PracticeIntent work on {speechName}
+PracticeIntent practice {speechName}
+
 EnumerateIntent what speeches do you have
 EnumerateIntent what can i practice
 EnumerateIntent speeches
@@ -11,17 +20,9 @@ AuthorEnumerateIntent authors
 AuthorEnumerateIntent speech authors
 AuthorEnumerateIntent speakers
 
-PracticeIntent i would like to practice {speechName}
-PracticeIntent can i practice {speechName}
-PracticeIntent can i work on {speechName}
-PracticeIntent i would like to work on {speechName}
-PracticeIntent work on {speechName}
-PracticeIntent practice {speechName}
-PracticeIntent find {speechName}
-
 SpeakIntent {freeFormSpeech}
 
-AMAZON.HelpIntent what can i say
 AMAZON.RepeatIntent again
 AMAZON.RepeatIntent what was that
+AMAZON.HelpIntent what can i say
 AMAZON.StopIntent leave

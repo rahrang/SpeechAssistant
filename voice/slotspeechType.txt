@@ -2,3 +2,6 @@ speechType
 I Have a Dream
 Speech of 1962
 Speech at Ford Auditorium
+Final Presentation
+Trial Speech
+Test Speech
