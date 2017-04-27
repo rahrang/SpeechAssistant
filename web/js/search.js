@@ -87,3 +87,11 @@ function resetPage() {
 	"use strict";
 	window.location.reload();
 }
+
+document.getElementById("searchText").addEventListener("keyup", function(event) {
+	"use strict";
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.getElementById("mySearch").click();
+    }
+});
