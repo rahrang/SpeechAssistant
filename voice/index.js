@@ -123,9 +123,14 @@ var startStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.START,{
 function enumerateSpeeches() {
     var speechOutput = "I have the speeches ";
     var total = Math.min(10, Object.keys(database).length);
+    if(total == 1) {
+        speechOutput = "I have the speech ";
+    }
     var count = 1;
     for(var key in database) {
-        if(count > total) {
+        if(total == 1) {
+            speechOutput += database[key]['Title'] + ".";
+        } else if(count > total) {
             break;
         }
         if(count == total) {
@@ -160,7 +165,7 @@ function transitionPracticeState() {
 var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     "Start": function() {
         var speechOutput = this.t("LOOK_UP", this.attributes['title'], this.attributes['author']);
-        speechOutput += " The first sentence is " + this.attributes['lines'][0];
+        speechOutput += " <break time=\"2s\" /> The first sentence is: " + this.attributes['lines'][0];
         this.emit(":ask", speechOutput, speechOutput);
     },
     "SpeakIntent": function() {
@@ -169,7 +174,7 @@ var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     "AMAZON.RepeatIntent": function() {
         var speechOutput = "You are currently on the following sentence: " + this.attributes['lines'][this.attributes['linePos']];
         this.emit(":ask", speechOutput, speechOutput);
-    }
+    },
     "Unhandled": function() {
         var speechOutput = this.t("UNHANDLED_PRACTICE", this.attributes['lines'][this.attributes['linePos']]);
         this.emit(":ask", speechOutput, speechOutput);
@@ -181,7 +186,7 @@ var practiceStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICE, {
     "AMAZON.CancelIntent": function() {
         var speechOutput = this.t("STOP_MESSAGE");
         this.emit(":tell", speechOutput, speechOutput);
-    },,
+    },
     "SessionEndedRequest": function() {
         console.log("Session ended in state: " + this.event.request.reason);
     }
@@ -194,7 +199,7 @@ function processSpeechInput() {
 
     var pos = this.attributes['linePos'];
     var system = this.attributes['lines'][pos];
-    var systemWords = system.split(/[(\ \,\;)]+/).filter(function(e1) {return e1.length!=0;});
+    var systemWords = system.split(/[(\ \,\;\:\"\-)]+/).filter(function(e1) {return e1.length!=0;});
     var systemLength = systemWords.length;
 
     if(userLength != systemLength) {
@@ -204,7 +209,31 @@ function processSpeechInput() {
     } else {
         var words = true;
         for(var i = 0; i < systemLength; i++) {
-            if(userWords[i].toLowerCase() === systemWords[i].toLowerCase()) {
+            var curUserWord = userWords[i];
+            if(curUserWord == 1) {
+                curUserWord = "one";
+            } else if (curUserWord == 2) {
+                curUserWord = "two";
+            } else if (curUserWord == 3) {
+                curUserWord = "three";
+            } else if (curUserWord == 4) {
+                curUserWord = "four";
+            } else if (curUserWord == 5) {
+                curUserWord = "five";
+            } else if (curUserWord == 6) {
+                curUserWord = "six";
+            } else if (curUserWord == 7) {
+                curUserWord = "seven";
+            } else if (curUserWord == 8) {
+                curUserWord = "eight";
+            } else if (curUserWord == 9) {
+                curUserWord = "nine";
+            } else if (curUserWord == 10) {
+                curUserWord = "ten";
+            } else {
+                curUserWord = curUserWord.toLowerCase();
+            }
+            if(curUserWord === systemWords[i].toLowerCase()) {
                 continue;
             } else {
                 words = false;
@@ -220,7 +249,7 @@ function processSpeechInput() {
                 this.attributes['repeat'] = true;
                 this.emit(":ask", speechOutput, speechOutput);
             } else {
-                speechOutput += this.attributes['lines'][pos+1];
+                speechOutput += "The next sentence is: " this.attributes['lines'][pos+1];
                 this.emit(":ask", speechOutput, speechOutput);
             }
         } else {
@@ -234,10 +263,50 @@ function processSpeechInput() {
 var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, {
     "Start": function() {
         // TODO: enumerate authors HERE
+        var speechOutput = "I have speeches by ";
+        var total = Math.min(10, Object.keys(database).length);
+        if(total == 1) {
+            speechOutput = "I have a speech by ";
+        }
+        var count = 1;
+        for(var key in database) {
+            if(total == 1) {
+                speechOutput += database[key]['Author'] + ".";
+            } else if(count > total) {
+                break;
+            }
+            if(count == total) {
+                speechOutput += "and " + database[key]['Author'] + ".";
+            } else {
+                speechOutput += database[key]['Author'] + ", ";
+            }
+            count += 1;
+        }
+        this.emit(":ask", speechOutput, speechOutput);
     },
     "Unhandled": function() {
         var speechOutput = "I couldn't understand that. ";
-        // TODO: enumerate authors HERE
+        var total = Math.min(10, Object.keys(database).length);
+        if(total == 1) {
+            speechOutput += "I have a speech by ";
+        } else {
+            speechOutput += "I have speeches by ";
+        }
+        var count = 1;
+        for(var key in database) {
+            if(total == 1) {
+                speechOutput += database[key]['Author'] + ".";
+            } else if(count > total) {
+                break;
+            }
+            if(count == total) {
+                speechOutput += "and " + database[key]['Author'] + ".";
+            } else {
+                speechOutput += database[key]['Author'] + ", ";
+            }
+            count += 1;
+        }
+        this.emit(":ask", speechOutput, speechOutput);
     },
     "AMAZON.StopIntent": function() {
         var speechOutput = this.t("STOP_MESSAGE");
@@ -246,7 +315,7 @@ var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, 
     "AMAZON.CancelIntent": function() {
         var speechOutput = this.t("STOP_MESSAGE");
         this.emit(":tell", speechOutput, speechOutput);
-    },,
+    },
     "SessionEndedRequest": function() {
         console.log("Session ended in state: " + this.event.request.reason);
     }
@@ -294,7 +363,7 @@ var practiceEndStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.PRACTICEEND
     "AMAZON.CancelIntent": function() {
         var speechOutput = this.t("STOP_MESSAGE");
         this.emit(":tell", speechOutput, speechOutput);
-    },,
+    },
     "SessionEndedRequest": function() {
         console.log("Session ended in state: " + this.event.request.reason);
     }
