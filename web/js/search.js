@@ -19,9 +19,8 @@ function doSearch() {
 	}
 
 	var list_holder = document.getElementById("entire-database");
-	var searchText = document.getElementById("searchText").value;
-	//	variables to help us update corresponding html tags
-	//	var link = "#link-";
+	var searchText = document.getElementById("searchText").value.toLowerCase();
+
 	var title = "#title-";
 	var author = "#author-";
 	var promo = "#promo-";
@@ -64,13 +63,13 @@ function doSearch() {
 
 		for (var index_2 = 0; index_2 < databaseSize; index_2++) {
 
-			if (searchText == data.Items[index_2].Title || searchText == data.Items[index_2].Author || searchText == data.Items[index_2].Words) {
+			if (searchText === data.Items[index_2].Title.toLowerCase() || searchText === data.Items[index_2].Author.toLowerCase() || searchText === data.Items[index_2].Words.toLowerCase()) {
 				x = 1;
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
 				$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
 
-			} else if (searchText == "") {
+			} else if (searchText === "") {
 				x = 1;
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
@@ -78,12 +77,13 @@ function doSearch() {
 			}
 
 		}
-		if (x == 0) {
+		if (x === 0) {
 			window.location.reload();
 		}
 	});
 }
 
 function resetPage() {
+	"use strict";
 	window.location.reload();
 }
