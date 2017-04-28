@@ -91,7 +91,7 @@ var startStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.START,{
     },
     "AuthorEnumerateIntent": function() {
         this.handler.state = SKILL_STATES.AENUMERATE;
-        this.emitWithState("Start");
+        this.emitWithState("Start", false);
     },
     "AMAZON.StartOverIntent": function() {
         this.emitWithState("Start");
@@ -158,6 +158,7 @@ function transitionPracticeState() {
         this.emitWithState("Start");
     } else {
         var speechOutput = this.t("UNFOUND_SPEECH", speechTitle);
+        this.handler.state = SKILL_STATES.START;
         this.emit(":ask", speechOutput, speechOutput);
     }
 }
@@ -265,8 +266,11 @@ function processSpeechInput() {
 }
 
 var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, {
-    "Start": function() {
-        // TODO: enumerate authors HERE
+    "Start": function(failInst) {
+        var speechOutput = "";
+        if(failInst) {
+            speechOutput += "Sorry, I couldn't find any speeches by that author. Please try again. ";
+        }
         var speechOutput = "I have speeches by ";
         var total = Math.min(10, Object.keys(database).length);
         if(total == 1) {
@@ -289,7 +293,67 @@ var aenumerateStateHandlers = Alexa.CreateStateHandler(SKILL_STATES.AENUMERATE, 
         this.emit(":ask", speechOutput, speechOutput);
     },
     "AuthorIntent": function() {
-        
+        var array = [];
+        var author = String(this.event.request.intent.slots.authorName.value).toLowerCase();
+        var count = 0;
+        for(var key in database) {
+            var speech = database[key];
+            if(speech['Author'].toLowerCase() === author) {
+                array[count] = speech['Title'];
+                count += 1;
+            }
+        }
+        var length = Object.keys(array).length
+        if(length > 0) {
+            var speechOutput = "By " + author + ", I have the ";
+            if(length == 1) {
+                speechOutput += "speech " + array[0] + ".";
+            } else {
+                speechOutput += "speeches "
+                for(var i = 0; i < length; i++) {
+                    if(i == length - 1) {
+                        speechOutput += "and " + array[i] + ".";
+                    }
+                    speechOutput += array[i] + ", ";
+                }
+            }
+            this.emit(":ask", speechOutput, speechOutput);
+        } else {
+            this.emitWithState("Start", true);
+        }
+    },
+    "SpeakIntent": function() {
+        var array = [];
+        var author = String(this.event.request.intent.slots.freeFormSpeech.value).toLowerCase();
+        var count = 0;
+        for(var key in database) {
+            var speech = database[key];
+            if(speech['Author'].toLowerCase() === author) {
+                array[count] = speech['Title'];
+                count += 1;
+            }
+        }
+        var length = Object.keys(array).length
+        if(length > 0) {
+            var speechOutput = "By " + author + ", I have the ";
+            if(length == 1) {
+                speechOutput += "speech " + array[0] + ".";
+            } else {
+                speechOutput += "speeches "
+                for(var i = 0; i < length; i++) {
+                    if(i == length - 1) {
+                        speechOutput += "and " + array[i] + ".";
+                    }
+                    speechOutput += array[i] + ", ";
+                }
+            }
+            this.emit(":ask", speechOutput, speechOutput);
+        } else {
+            this.emitWithState("Start", true);
+        }
+    },
+    "PracticeIntent": function() {
+        transitionPracticeState.call(this);
     },
     "Unhandled": function() {
         var speechOutput = "I couldn't understand that. ";

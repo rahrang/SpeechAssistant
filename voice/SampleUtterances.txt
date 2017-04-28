@@ -20,6 +20,10 @@ AuthorEnumerateIntent authors
 AuthorEnumerateIntent speech authors
 AuthorEnumerateIntent speakers
 
+AuthorIntent {authorName}
+AuthorIntent i want speeches by {authorName}
+AuthorIntent show me {authorName}
+
 SpeakIntent {freeFormSpeech}
 
 AMAZON.RepeatIntent again
