@@ -59,19 +59,18 @@
 	<br>
 	<br>
 	<br>
+	<div class="hero-container">
+		<div class="title-container">
+			<h1 id="speech-title"> Search </h1>
+			<p>You may search by title or author.</p>
+		</div>
 
-	<div class="title-container">
-		<h1 id="speech-title"> Search </h1>
-		<p>You may search by title or author.</p>
+		<form id="search-form" name="search" action="/products" method="get">
+	    	<input type="text" id="searchText">
+			<input type="button" value="Search" id="mySearch" onclick="doSearch();">
+			<input type="button" value="Reset" id="myReset" onclick="resetPage();">
+		</form>
 	</div>
-		
-	<br><br>
-	<form id="search-form" name="search" action="/products" method="get">
-    	<input type="text" id="searchText">
-		<input type="button" value="Search" id="mySearch" onclick="doSearch();">
-		<input type="button" value="Reset" id="myReset" onclick="resetPage();">
-	</form>
-	
 	<ul id="entire-database" class="list-inline text-center">
 		
 	</ul>

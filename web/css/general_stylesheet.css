@@ -108,6 +108,8 @@ a:active {
 	margin: 1% 2%;
 	padding: 2%;
 	width: 25%;
+	height: 300px;
+	vertical-align: top;
 }
 
 
@@ -275,4 +277,3 @@ p#names {
 		height:2%;
 	}
 }
-
