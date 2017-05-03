@@ -20,6 +20,7 @@ $(document).ready( function() {
 	var title = "#title-";
 	var author = "#author-";
 	var promo = "#promo-";
+	var link = "#link-";
 
 	$.get(databaseURL, function(data) {
 		
@@ -61,10 +62,10 @@ $(document).ready( function() {
 			$(title + index_2).text(data.Items[index_2].Title);
 			$(author + index_2).text(data.Items[index_2].Author);
 			$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
-
+			$(link + index_2).attr("onclick", "handleClick(" + index_2 +")");
 		}
 	});	
-})
+});
 
 function doSearch() {
 	
@@ -86,7 +87,8 @@ function doSearch() {
 	var title = "#title-";
 	var author = "#author-";
 	var promo = "#promo-";
-
+	var link = "#link-";
+	
 	var x = 0; 
 
 	var searchText = document.getElementById("searchText").value.toLowerCase();
@@ -138,12 +140,14 @@ function doSearch() {
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
 				$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
+				$(link + index_2).attr("onclick", "handleClick(" + index_2 +")");
 
 			} else if (searchText === "") {
 				x = 1;
 				$(title + index_2).text(data.Items[index_2].Title);
 				$(author + index_2).text(data.Items[index_2].Author);
 				$(promo + index_2).text(get6Words(data.Items[index_2].Words) + "...");
+				$(link + index_2).attr("onclick", "handleClick(" + index_2 +")");
 			}
 
 		}
@@ -156,4 +160,10 @@ function doSearch() {
 function resetPage() {
 	"use strict";
 	window.location.reload();
+}
+
+function handleClick(i) {
+	"use strict";
+	sessionStorage.setItem("global_index", i);
+	return false;
 }
